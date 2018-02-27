@@ -152,13 +152,14 @@ var previewbox = document.getElementById('preview');
 var lightbox = document.getElementById('lightbox');
 
 lightbox.addEventListener('click', function(event) {
-    console.log(event.target);
+    event.preventDefault();
     if (event.target === lightbox || event.target === lightbox.querySelector('.close-button')) {
         lightbox.classList.toggle('inactive');
     }
 });
 
-lightbox.querySelector('.left-arrow').addEventListener('click', function() {
+lightbox.querySelector('.left-arrow').addEventListener('click', function(event) {
+    event.preventDefault();
     var currentImage = lightbox.querySelector('img');
     var nextImage;
     if (currentImage.getAttribute('data-item-id') === '0') {
@@ -171,7 +172,8 @@ lightbox.querySelector('.left-arrow').addEventListener('click', function() {
     currentImage.setAttribute('data-item-id', nextImage.id);
 });
 
-lightbox.querySelector('.right-arrow').addEventListener('click', function() {
+lightbox.querySelector('.right-arrow').addEventListener('click', function(event) {
+    event.preventDefault();
     var currentImage = lightbox.querySelector('img');
     var nextImage;
     if (Number(currentImage.getAttribute('data-item-id')) === (imageList.length-1)) {
@@ -184,17 +186,18 @@ lightbox.querySelector('.right-arrow').addEventListener('click', function() {
     currentImage.setAttribute('data-item-id', nextImage.id);
 });
 
-imageList.forEach(function(image) {
+imageList.forEach(function(image, i) {
         var preview = document.createElement('img');
         preview.classList.add('preview-image');
-        preview.setAttribute('data-item-id', image.id);
+        preview.setAttribute('data-item-id', i);
         preview.setAttribute('src', image.src);
         preview.setAttribute('alt', image.alt);
-        preview.addEventListener('click', function() {
+        preview.addEventListener('click', function(event) {
+            event.preventDefault();
             var pic = lightbox.querySelector('img');
             pic.setAttribute('src', image.src);
             pic.setAttribute('alt', image.alt);
-            pic.setAttribute('data-item-id', image.id);
+            pic.setAttribute('data-item-id', i);
             lightbox.classList.toggle('inactive');
         });
         preview.addEventListener('mouseenter', function() {
